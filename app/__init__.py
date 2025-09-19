@@ -1,5 +1,4 @@
-def chat(message: str) -> str:
-    return f"Echo: {message}"
+from .main import Chat
 
 
-__all__ = ["chat"]
+__all__ = ["Chat"]
