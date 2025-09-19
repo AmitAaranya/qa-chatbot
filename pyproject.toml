@@ -3,7 +3,7 @@ name = "qa-chatbot"
 version = "0.1.0"
 description = "GenAI based QA chatbot"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.11"
 dependencies = [
     "chromadb>=1.1.0",
     "google-genai>=1.38.0",
