@@ -7,13 +7,28 @@ from .db import ChromaDBManager
 
 
 class Chat:
+    """A chat interface that combines LLM capabilities with vector database search.
+    
+    This class manages the conversation flow, storing chat history, and retrieving
+    relevant context from a vector database to provide informed responses.
+    """
+    
     def __init__(self):
+        """Initialize a new chat session with LLM and vector database components."""
         self.message_store = []
         self.ai = GoogleGeminiLLM(system_prompt=QA_SYSTEM_PROMPT)
         self.db = ChromaDBManager(collection_name=str(uuid.uuid4()))
 
     
     def __call__(self, user_message) -> Any:
+        """Process user message and generate a response using context from the database.
+        
+        Args:
+            user_message: The message from the user to process.
+            
+        Yields:
+            str: Generated response chunks from the LLM.
+        """
         context = self.__create_context(self.db.query_documents(user_message))
         user_message = f"{context}\n\n{user_message}"
         self.message_store.append(self.ai.format_prompts(user_message, role="user"))
@@ -24,7 +39,15 @@ class Chat:
                 yield chunk
         self.message_store.append(self.ai.format_prompts(response, role="model"))
 
-    def process_file(self,file) -> str:
+    def process_file(self, file) -> str:
+        """Process a CSV file containing questions and answers.
+        
+        Args:
+            file: A file object containing CSV data with Question and Answer columns.
+            
+        Returns:
+            str: A message indicating the success or failure of file processing.
+        """
         df = pd.read_csv(file)
         required_cols = {"Question", "Answer"}
         if not required_cols.issubset(df.columns):
@@ -37,6 +60,14 @@ class Chat:
         return f"File `{file.name}` processed successfully."
     
     def __create_context(self, query_results) -> str:
+        """Create a context string from query results for the LLM.
+        
+        Args:
+            query_results: Results from the vector database query.
+            
+        Returns:
+            str: Formatted context string containing relevant Q&A pairs.
+        """
         context = "My Knowledge:\n"
         for doc, meta, distance in zip(query_results['documents'][0], 
                                      query_results['metadatas'][0],

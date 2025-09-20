@@ -10,7 +10,7 @@ A question-answering chatbot powered by Google's Gemini LLM and Streamlit. The a
 - **Streamlit** - Web application framework
 - **Google Gemini** - Large Language Model for natural language processing
 - **ChromaDB** - Vector database for efficient similarity search
-- **Sentence Transformers** - For text embeddings and semantic search
+- **Embedding Model** - For text embeddings chunks, model:  `all-MiniLM-L6-v2` (default for ChromaDB)
 - **Pandas** - For data manipulation and CSV processing
 
 ## Setup and Installation
@@ -28,7 +28,7 @@ A question-answering chatbot powered by Google's Gemini LLM and Streamlit. The a
 
 3. Create and activate virtual environment using uv:
    ```bash
-   uv venv
+   uv venv .venv
    .venv\Scripts\activate  # On Windows
    source .venv/bin/activate  # On Unix/MacOS
    ```

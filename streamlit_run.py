@@ -5,6 +5,12 @@ load_dotenv()
 from app import Chat
 
 def handle_csv_file(files, chat_client):
+    """Process uploaded CSV files and add their content to the chat client.
+    
+    Args:
+        files: List of uploaded file objects.
+        chat_client: Instance of Chat class to process the files.
+    """
     for file in files:
         result = chat_client.process_file(file)
         st.session_state.messages.append({"role": "assistant", "content": result})
@@ -12,10 +18,23 @@ def handle_csv_file(files, chat_client):
 
 
 def get_chat_client():
+    """Create and return a new instance of the Chat client.
+    
+    Returns:
+        Chat: A new Chat instance for handling Q&A interactions.
+    """
     return Chat()
 
 
 def main():
+    """Main function to run the Streamlit chat application.
+    
+    This function:
+    - Sets up the chat interface
+    - Handles file uploads and chat interactions
+    - Maintains chat history in session state
+    - Processes and displays responses from the chat client
+    """
     st.markdown("""
         <style>
         .title {
