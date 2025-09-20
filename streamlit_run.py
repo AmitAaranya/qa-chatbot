@@ -11,7 +11,6 @@ def handle_csv_file(files, chat_client):
     st.rerun()
 
 
-@st.cache_resource
 def get_chat_client():
     return Chat()
 

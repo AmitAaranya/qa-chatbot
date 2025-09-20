@@ -1,3 +1,4 @@
+import uuid
 from typing import Any
 import pandas as pd
 from .llm import GoogleGeminiLLM
@@ -9,7 +10,7 @@ class Chat:
     def __init__(self):
         self.message_store = []
         self.ai = GoogleGeminiLLM(system_prompt=QA_SYSTEM_PROMPT)
-        self.db = ChromaDBManager()
+        self.db = ChromaDBManager(collection_name=str(uuid.uuid4()))
 
     
     def __call__(self, user_message) -> Any:
