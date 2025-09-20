@@ -1,9 +1,8 @@
 import streamlit as st
+from dotenv import load_dotenv
+load_dotenv()
 
 from app import Chat
-from dotenv import load_dotenv
-
-load_dotenv()
 
 def handle_csv_file(files, chat_client):
     for file in files:
@@ -12,12 +11,26 @@ def handle_csv_file(files, chat_client):
     st.rerun()
 
 
+@st.cache_resource
+def get_chat_client():
+    return Chat()
+
+
 def main():
-    st.title('QA Chatbot')
+    st.markdown("""
+        <style>
+        .title {
+            text-align: center;
+            padding: 1rem;
+        }
+        </style>
+        <h2 class="title">QA Chatbot</h2>
+    """, unsafe_allow_html=True)
+    
     if "messages" not in st.session_state:
         st.session_state.messages = []
     if "chat_client" not in st.session_state:
-        st.session_state.chat_client = Chat()
+        st.session_state.chat_client = get_chat_client()
 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
