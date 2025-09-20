@@ -36,7 +36,7 @@ class Chat:
         return f"File `{file.name}` processed successfully."
     
     def __create_context(self, query_results) -> str:
-        context = "QA Context:\n"
+        context = "My Knowledge:\n"
         for doc, meta, distance in zip(query_results['documents'][0], 
                                      query_results['metadatas'][0],
                                      query_results['distances'][0]):

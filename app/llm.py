@@ -9,6 +9,7 @@ class GoogleGeminiLLM:
         api_key = os.environ["GOOGLE_GEMINI_API_KEY"]
         self.client = genai.Client(api_key=api_key)
         self.generate_content_config = types.GenerateContentConfig(
+                                temperature=0.3,
                                 system_instruction=[types.Part.from_text(text=system_prompt)]
                                 )
 
