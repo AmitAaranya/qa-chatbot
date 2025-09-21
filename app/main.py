@@ -2,7 +2,7 @@ import uuid
 from typing import Any
 import pandas as pd
 from .llm import GoogleGeminiLLM
-from .prompt import QA_SYSTEM_PROMPT
+from .prompt import QA_SYSTEM_PROMPT, create_user_prompt
 from .db import ChromaDBManager
 
 
@@ -30,13 +30,15 @@ class Chat:
             str: Generated response chunks from the LLM.
         """
         context = self.__create_context(self.db.query_documents(user_message))
-        user_message = f"{context}\n\n{user_message}"
-        self.message_store.append(self.ai.format_prompts(user_message, role="user"))
+        user_prompt = create_user_prompt(context, user_message)
+        self.message_store.append(self.ai.format_prompts(user_prompt, role="user"))
         response = ""
         for chunk in self.ai.generate_text(self.message_store):
             if isinstance(chunk, str):
                 response += chunk
                 yield chunk
+        self.message_store.pop()  # Remove the last user message
+        self.message_store.append(self.ai.format_prompts(user_message, role="user"))
         self.message_store.append(self.ai.format_prompts(response, role="model"))
 
     def process_file(self, file) -> str:
@@ -68,7 +70,7 @@ class Chat:
         Returns:
             str: Formatted context string containing relevant Q&A pairs.
         """
-        context = "My Knowledge:\n"
+        context = "QA-Knowledge:\n"
         for doc, meta, distance in zip(query_results['documents'][0], 
                                      query_results['metadatas'][0],
                                      query_results['distances'][0]):
