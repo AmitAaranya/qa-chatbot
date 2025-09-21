@@ -69,21 +69,15 @@ def main():
     
         st.session_state.messages.append({"role": "user", "content": prompt_text})
         
-        # Create a placeholder for the assistant's response
         with st.chat_message("assistant"):
-            response_placeholder = st.empty()
             full_response = ""
             
             # Stream the response
-            for response_chunk in st.session_state.chat_client(user_message=prompt_text):
-                full_response += response_chunk
-                # Update the placeholder with the accumulated response
-                response_placeholder.markdown(full_response + "▌")
-            
-            # Final update without the cursor
-            response_placeholder.markdown(full_response)
+            response_stream =  st.session_state.chat_client(user_message=prompt_text)
+            full_response = st.write_stream(response_stream)
         
         st.session_state.messages.append({"role": "assistant", "content": full_response})
+        st.rerun()
 
 
 if __name__ == "__main__":
