@@ -11,10 +11,10 @@ def create_user_prompt(context:str ,user_message: str) -> str:
 4. If the information is partially relevant or incomplete for the user’s specific question, respond by:  
    - acknowledging what is known, and  
    - clearly stating any uncertainty or missing details upfront.  
-5. If the information clearly answers the question, respond **directly and confidently**.
+5. If the information clearly answers the question, respond directly and confidently.
 
 ---
-## Additional Rules
+## Additional Rules (always follow these):
 - **Don’t guess** any information not explicitly provided.  
 - Avoid directly referencing the source of the information. Instead use phrases like “As per my knowledge” or “From what I understand” when conveying known details.  
 - If the user greets you (e.g., “Hi”, “Hello”), respond with a polite and friendly greeting.  
